@@ -45,8 +45,7 @@ def take_measures(directory):
 
         if stack and stack[-1].parent == measure.path:
             measure.eat(stack.pop())
-
-        log.debug('child fed measure: {}'.format(measure))
+            log.debug('child fed measure: {}'.format(measure))
 
         if stack and stack[-1].parent == measure.parent:
             stack[-1].eat(measure)
