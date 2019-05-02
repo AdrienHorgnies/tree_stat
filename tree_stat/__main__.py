@@ -8,8 +8,10 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 
 from tree_stat import directory_measure as dm
 
+log = logging.getLogger(__name__)
 
-def main(directory=None):
+
+def tree_stat(directory=None):
     directory = directory or os.getcwd()
     directory_measures = take_measures(directory)
 
@@ -75,7 +77,8 @@ def human_readable_size(size):
         unit=units[coef_idx])
 
 
-if __name__ == '__main__':
+def main():
+    global args
     parser = argparse.ArgumentParser(description='Find files recursively and compute size of each directory level')
     parser.add_argument('directory', required=False, help='a directory to search in')
     # parser.add_argument('-e', '--extensions', nargs='+', metavar='extension', required=False,
@@ -87,8 +90,9 @@ if __name__ == '__main__':
                              ' This option sets coefficient base to 1000')
     parser.add_argument('--DEBUG', default=False, action='store_true', help='Display debug logs')
     args = parser.parse_args()
-
-    log = logging.getLogger(__name__)
     logging.basicConfig(level=logging.DEBUG if args.DEBUG else logging.INFO)
+    tree_stat(args.directory)
 
-    main(args.directory)
+
+if __name__ == '__main__':
+    main()
