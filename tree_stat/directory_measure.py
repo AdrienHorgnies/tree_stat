@@ -1,6 +1,9 @@
 from collections import defaultdict
 from os.path import splitext, join, dirname
 from os import stat
+import logging
+
+log = logging.getLogger('tree_stat.dm')
 
 
 class DirectoryMeasure:
@@ -8,22 +11,25 @@ class DirectoryMeasure:
         self.path = path
         self.parent = parent or dirname(path)
         self.file_type_measures = defaultdict(FilesMeasure)
-        self.count = 0
-        self.volume = 0
 
         for f in files:
             ext = splitext(f)[1]
-            self.file_type_measures[ext].volume += stat(join(path, f)).st_size
+            file_size = stat(join(path, f)).st_size
+            self.file_type_measures[ext].volume += file_size
             self.file_type_measures[ext].count += 1
-            self.count += 1
-            self.volume += self.file_type_measures[ext].volume
+
+    @property
+    def total(self):
+        it = FilesMeasure()
+        for ext in self.file_type_measures.keys():
+            it.volume += self.file_type_measures[ext].volume
+            it.count += self.file_type_measures[ext].count
+        return it
 
     def eat(self, child):
         for ext in child.file_type_measures.keys():
             self.file_type_measures[ext].volume += child.file_type_measures[ext].volume
             self.file_type_measures[ext].count += child.file_type_measures[ext].count
-            self.count += child.file_type_measures[ext].count
-            self.volume += child.file_type_measures[ext].volume
 
     def edible_clone(self):
         clone = DirectoryMeasure([], parent=dirname(self.path))
@@ -31,14 +37,10 @@ class DirectoryMeasure:
         return clone
 
     def __repr__(self):
-        return 'DirectoryMeasure(' \
-               'path={path}, ' \
-               'parent={parent}, ' \
-               'file_type_measures={file_type_measures}, ' \
-               'count={count}, ' \
-               'volume={volume})'.format(
-                    **vars(self)
-               )
+        return 'DirectoryMeasure({})' \
+            .format(', '.join(['{v}={{{v}}}'
+                              .format(v=v) for v in vars(self).keys()])) \
+            .format(**vars(self))
 
 
 class FilesMeasure:
@@ -47,4 +49,7 @@ class FilesMeasure:
         self.count = 0
 
     def __repr__(self):
-        return 'FilesMeasure(count={count}, volume={volume})'.format(**vars(self))
+        return 'FilesMeasure({})' \
+            .format(', '.join(['{v}={{{v}}}'
+                              .format(v=v) for v in vars(self).keys()])) \
+            .format(**vars(self))
