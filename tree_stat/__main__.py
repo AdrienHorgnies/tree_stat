@@ -80,7 +80,7 @@ def human_readable_size(size):
 def main():
     global args
     parser = argparse.ArgumentParser(description='Find files recursively and compute size of each directory level')
-    parser.add_argument('directory', required=False, help='a directory to search in')
+    parser.add_argument('directory', nargs='?', help='a directory to search in')
     # parser.add_argument('-e', '--extensions', nargs='+', metavar='extension', required=False,
     #                     help='only count files with these extensions')
     parser.add_argument('-c', '--classify', default=False, action='store_true',
@@ -90,7 +90,9 @@ def main():
                              ' This option sets coefficient base to 1000')
     parser.add_argument('--DEBUG', default=False, action='store_true', help='Display debug logs')
     args = parser.parse_args()
+
     logging.basicConfig(level=logging.DEBUG if args.DEBUG else logging.INFO)
+
     tree_stat(args.directory)
 
 
