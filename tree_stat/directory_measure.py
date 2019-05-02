@@ -30,8 +30,21 @@ class DirectoryMeasure:
         clone.eat(self)
         return clone
 
+    def __repr__(self):
+        return 'DirectoryMeasure(' \
+               'path={path}, ' \
+               'parent={parent}, ' \
+               'file_type_measures={file_type_measures}, ' \
+               'count={count}, ' \
+               'volume={volume})'.format(
+                    **vars(self)
+               )
+
 
 class FilesMeasure:
     def __init__(self):
         self.volume = 0
         self.count = 0
+
+    def __repr__(self):
+        return 'FilesMeasure(count={count}, volume={volume})'.format(**vars(self))
