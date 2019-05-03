@@ -9,7 +9,7 @@ log = logging.getLogger('tree_stat.dm')
 class DirectoryMeasure:
     def __init__(self, files, path=None, parent=None):
         self.path = path
-        self.parent = parent or dirname(path)
+        self.parent = parent if parent is not None else dirname(path)
         self.file_type_measures = defaultdict(FilesMeasure)
 
         for f in files:
