@@ -23,11 +23,11 @@ def tree_stat(directory=None):
     )
     env.globals['human_readable_size'] = human_readable_size
 
-    template = env.get_template('report.md')
+    template = env.get_template('tree_stat.md')
 
     report = template.render(directory_measures=reversed(list(directory_measures.values())))
 
-    with open('report.md', 'w') as f:
+    with open('tree_stat.md', 'w') as f:
         f.write(report)
 
 
