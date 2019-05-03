@@ -21,15 +21,15 @@ class DirectoryMeasure:
     @property
     def total(self):
         it = FilesMeasure()
-        for ext in self.file_type_measures.keys():
-            it.volume += self.file_type_measures[ext].volume
-            it.count += self.file_type_measures[ext].count
+        for v in self.file_type_measures.values():
+            it.volume += v.volume
+            it.count += v.count
         return it
 
     def eat(self, child):
-        for ext in child.file_type_measures.keys():
-            self.file_type_measures[ext].volume += child.file_type_measures[ext].volume
-            self.file_type_measures[ext].count += child.file_type_measures[ext].count
+        for ext, v in child.file_type_measures.items():
+            self.file_type_measures[ext].volume += v.volume
+            self.file_type_measures[ext].count += v.count
 
     def edible_clone(self):
         clone = DirectoryMeasure([], parent=dirname(self.path))
