@@ -1,6 +1,6 @@
 # tree_stat
 
-Count files and their measure in a directory tree with stats for each level.
+Count files and their size in a directory tree with stats for each level.
 
 Given a tree:
 
