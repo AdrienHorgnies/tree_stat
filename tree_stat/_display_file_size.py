@@ -3,7 +3,7 @@ import math
 
 COMMERCIAL = 1000
 INFORMATICS = 2**10
-coefficient_symbols = '_KMGTPEZY'
+__coefficient_symbols = '_KMGTPEZY'
 
 
 def display_file_size(size, unit_base=INFORMATICS):
@@ -15,11 +15,11 @@ def display_file_size(size, unit_base=INFORMATICS):
     if size_log == 0:
         return '{} B'.format(size)
 
-    coefficients = [s + 'i' if unit_base == INFORMATICS else s for s in coefficient_symbols]
+    coefficients = [s + 'i' if unit_base == INFORMATICS else s for s in __coefficient_symbols]
 
-    if size_log >= len(coefficient_symbols):
+    if size_log >= len(__coefficient_symbols):
         return '{number:.3f} {coefficient}B'.format(
-            number=size / unit_base ** (len(coefficient_symbols) - 1),
+            number=size / unit_base ** (len(__coefficient_symbols) - 1),
             coefficient=coefficients[-1])
 
     return '{number:.3f} {coefficient}B'.format(
