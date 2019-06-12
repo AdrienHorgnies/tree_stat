@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 import argparse
 import logging
-import math
 import os
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 from tree_stat import directory_measure as dm
+from tree_stat._display_file_size import COMMERCIAL, INFORMATICS, display_file_size
 
 log = logging.getLogger(__name__)
 
@@ -21,7 +21,7 @@ def tree_stat(directory=None):
         trim_blocks=True,
         lstrip_blocks=True,
     )
-    env.globals['human_readable_size'] = human_readable_size
+    env.globals['display_file_size'] = lambda size: display_file_size(size, args.coefficient_base)
 
     template = env.get_template('tree_stat.md')
 
@@ -55,27 +55,6 @@ def take_measures(directory):
     return dir_tree
 
 
-def human_readable_size(size):
-    if size == 0:
-        return '0 B'
-
-    unit_base = 1000 if args.commercial_base else 1024
-    units = ['B'] + [coef + 'B' if args.commercial_base else coef + 'iB' for coef in 'KMGTPEZY']
-
-    size_log = math.log(size, unit_base)
-
-    if size_log >= len(units):
-        return '{number:.3f} {unit}'.format(
-            number=size / unit_base ** (len(units) - 1),
-            unit=units[-1])
-
-    coef_idx = math.floor(size_log)
-
-    return '{number:.3f} {unit}'.format(
-        number=size / unit_base ** coef_idx,
-        unit=units[coef_idx])
-
-
 def main():
     global args
     parser = argparse.ArgumentParser(description='Find files recursively and compute size of each directory level')
@@ -84,9 +63,9 @@ def main():
     #                     help='only count files with these extensions')
     parser.add_argument('-c', '--classify', default=False, action='store_true',
                         help='Display size by file type')
-    parser.add_argument('--commercial-base', default=False, action='store_true',
-                        help='By default, size is printed using coefficient with base 1024.'
-                             ' This option sets coefficient base to 1000')
+    parser.add_argument('--commercial-base', dest='coefficient_base', default=INFORMATICS, action='store_const',
+                        const=COMMERCIAL, help='By default, size is printed using coefficient with base 1024.'
+                                               ' This option sets coefficient base to 1000')
     parser.add_argument('--DEBUG', default=False, action='store_true', help='Display debug logs')
     args = parser.parse_args()
 
