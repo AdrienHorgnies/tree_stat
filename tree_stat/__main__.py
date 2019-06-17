@@ -40,7 +40,7 @@ def take_measures(directory):
     for current, sub_dirs, files in os.walk(directory, topdown=False):
         log.debug('working in {}'.format(current))
 
-        measure = dm.DirectoryMeasure(files, path=current)
+        measure = dm.DirectoryMeasure(files, path=Path(current))
         dir_tree[current] = measure
 
         log.debug('own measure: {}'.format(measure))

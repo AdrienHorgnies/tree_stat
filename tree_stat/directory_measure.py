@@ -1,6 +1,6 @@
 from collections import defaultdict
-from os.path import splitext, join, dirname
-from os import stat
+from os.path import splitext
+from pathlib import Path
 import logging
 
 log = logging.getLogger('tree_stat.dm')
@@ -9,12 +9,12 @@ log = logging.getLogger('tree_stat.dm')
 class DirectoryMeasure:
     def __init__(self, files, path=None, parent=None):
         self.path = path
-        self.parent = parent if parent is not None else dirname(path)
+        self.parent = parent if parent is not None else path.parent
         self.file_type_measures = defaultdict(FilesMeasure)
 
-        for f in files:
+        for f in (Path(f) for f in files):
             ext = splitext(f)[1]
-            file_size = stat(join(path, f)).st_size
+            file_size = path.joinpath(f).stat().st_size
             self.file_type_measures[ext].volume += file_size
             self.file_type_measures[ext].count += 1
 
@@ -32,7 +32,7 @@ class DirectoryMeasure:
             self.file_type_measures[ext].count += v.count
 
     def edible_clone(self):
-        clone = DirectoryMeasure([], parent=dirname(self.path))
+        clone = DirectoryMeasure([], parent=self.path.parent)
         clone.eat(self)
         return clone
 
