@@ -10,26 +10,30 @@ class DirectoryMeasure:
     def __init__(self, files, path=None, parent=None):
         self.path = path
         self.parent = parent if parent is not None else path.parent
-        self.file_type_measures = defaultdict(FilesMeasure)
+        self.__measures_by_file_type = defaultdict(FileTypeMeasure)
 
         for f in (Path(f) for f in files):
             ext = splitext(f)[1]
             file_size = path.joinpath(f).stat().st_size
-            self.file_type_measures[ext].volume += file_size
-            self.file_type_measures[ext].count += 1
+            self.__measures_by_file_type[ext].volume += file_size
+            self.__measures_by_file_type[ext].count += 1
+
+    @property
+    def measures_by_file_type(self):
+        return sorted(self.__measures_by_file_type.items())
 
     @property
     def total(self):
-        it = FilesMeasure()
-        for v in self.file_type_measures.values():
+        it = FileTypeMeasure()
+        for v in self.__measures_by_file_type.values():
             it.volume += v.volume
             it.count += v.count
         return it
 
     def eat(self, child):
-        for ext, v in child.file_type_measures.items():
-            self.file_type_measures[ext].volume += v.volume
-            self.file_type_measures[ext].count += v.count
+        for ext, v in child.__measures_by_file_type.items():
+            self.__measures_by_file_type[ext].volume += v.volume
+            self.__measures_by_file_type[ext].count += v.count
 
     def edible_clone(self):
         clone = DirectoryMeasure([], parent=self.path.parent)
@@ -43,7 +47,7 @@ class DirectoryMeasure:
             .format(**vars(self))
 
 
-class FilesMeasure:
+class FileTypeMeasure:
     def __init__(self):
         self.volume = 0
         self.count = 0
