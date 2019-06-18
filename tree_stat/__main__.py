@@ -25,7 +25,7 @@ def tree_stat(directory):
 
     template = env.get_template('tree_stat.md')
 
-    report = template.render(directory_measures=reversed(list(directory_measures.values())))
+    report = template.render(directory_measures=directory_measures)
 
     if args.print or not args.output:
         print(report)
@@ -34,14 +34,14 @@ def tree_stat(directory):
 
 
 def take_measures(directory):
-    dir_tree = dict()
+    measures = []
 
     stack = []
     for current, sub_dirs, files in os.walk(directory, topdown=False):
         log.debug('working in {}'.format(current))
 
         measure = dm.DirectoryMeasure(files, path=Path(current))
-        dir_tree[current] = measure
+        measures.insert(0, measure)
 
         log.debug('own measure: {}'.format(measure))
 
@@ -54,7 +54,7 @@ def take_measures(directory):
         else:
             stack.append(measure.edible_clone())
 
-    return dir_tree
+    return measures
 
 
 def main():
