@@ -61,8 +61,6 @@ def main():
     global args
     parser = argparse.ArgumentParser(description='Find files recursively and compute size of each directory level')
     parser.add_argument('directory', type=Path, nargs='?', default=Path.cwd(), help='a directory to search in')
-    # parser.add_argument('-e', '--extensions', nargs='+', metavar='extension', required=False,
-    #                     help='only count files with these extensions')
     parser.add_argument('-o', '--output', type=Path, help='File to write to result into')
     parser.add_argument('--print', default=False, action='store_true',
                         help='Print result to standard output, it is the default if --output is not specified')
