@@ -12,7 +12,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     packages=setuptools.find_packages(),
     include_package_data=True,
-    install_requires=['pyyaml', 'mysql_tracer', 'Jinja2'],
+    install_requires=['Jinja2'],
     entry_points={
         'console_scripts': ['tree_stat=tree_stat.__main__:main']
     },
