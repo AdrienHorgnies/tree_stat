@@ -11,6 +11,8 @@ before_install:
   - pip install pip-tools # pip-tools to generate requirements.txt
   - pip-compile # generate requirements.txt
 before_script:
+  - tree_stat tests/assets/sample-tree -o travis-stat.md
+  - diff travis-stat.md tests/assets/sample-tree-stat.md
   - pip install -e .[dev] # install dev dependencies to test
 script:
   - python -m pytest
