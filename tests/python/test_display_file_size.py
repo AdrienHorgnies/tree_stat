@@ -18,8 +18,8 @@ def test_display_1024():
 
 
 def test_display_7777777():
-    assert display_file_size(7_777_777, unit_base=INFORMATICS) == '7.417 MiB'
-    assert display_file_size(7_777_777, unit_base=COMMERCIAL) == '7.778 MB'
+    assert display_file_size(7777777, unit_base=INFORMATICS) == '7.417 MiB'
+    assert display_file_size(7777777, unit_base=COMMERCIAL) == '7.778 MB'
 
 
 def test_display_big_number():
