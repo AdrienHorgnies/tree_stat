@@ -5,8 +5,10 @@ python:
 - '3.5'
 - '3.6'
 cache: pip
+before_script:
+  - pip install -e .[dev]
 script:
-- python -m pytest
+  - python -m pytest
 before_install:
 - python setup.py install
 deploy:

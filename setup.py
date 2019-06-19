@@ -13,6 +13,9 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     include_package_data=True,
     install_requires=['Jinja2'],
+    extras_require={
+        'dev': ['pytest']
+    },
     entry_points={
         'console_scripts': ['tree_stat=tree_stat.__main__:main']
     },
