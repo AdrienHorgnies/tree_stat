@@ -7,15 +7,16 @@ python:
 - '3.7'
 cache: pip
 before_install:
-  - pip install --upgrade pip # travis use an ancient version...
-  - pip install pip-tools # pip-tools to generate requirements.txt
-  - pip-compile # generate requirements.txt
+- pip install --upgrade pip # travis use an ancient version...
+- pip install pip-tools # pip-tools to generate requirements.txt
+- pip-compile # generate requirements.txt
 before_script:
-  - tree_stat tests/assets/sample-tree -o travis-stat.md
-  - diff travis-stat.md tests/assets/sample-tree-stat.md
   - pip install -e .[dev] # install dev dependencies to test
 script:
-  - python -m pytest
+- python -m pytest # unit tests
+- python setup.py build install # build and install so that I can test
+- python -m tree_stat tests/assets/sample-tree -o travis-stat.md # test script against sample data
+- diff travis-stat.md tests/assets/sample-tree-stat.md # compare sample result with expected result
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
