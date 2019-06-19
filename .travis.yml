@@ -1,0 +1,16 @@
+language: python
+python:
+- '3.7'
+script:
+- pytest
+before_install:
+- python setup.py install
+deploy:
+  provider: pypi
+  distributions: sdist bdist_wheel
+  user: ahorgnies
+  server: https://testpypi.python.org/pypi
+  on:
+    tags: true
+  password:
+    secure: Ke/jm7nGDO+FIsA2Uoy3YMomJo0WzGZ7NEZ4Bba/SpR3cs+JyDcR67FEiE7eT4ktTtMsZq8L/AOY7hJq+jotIBzd/GuJl/6jDX5/FE48hrFZmTFdml+ruwlciqijeVIWFznzNvbF2Drq2dYflkzwpiCzi9Mrro3TNzD9I/YxAkGC6MQSnIM4BEs8z724FRCOu5+6mgJE98W17t1LQD/7cPRitz4SE5geZ8uy5Bxp9LvIzOYCJR4g+QQrjshQcSKblXNaGRNltiAWn1+PQctA0CZRxPLE52ivEIjl7zAPXmMJeKeS7Mvz74h/98NBgKPrbZwjYLeTjsHxcUbgUVDoWdgla4wk5jjF10OVfRx2IvYIvygAMOY8HwcuYKpht9+cuJylIpik1lR+Df7OD1accuO3Q1YoRqaL36vyYtPGVz34mkCKMmCr9vIFVHolv5bc8jxEC9++u/bQsyC5rTvS5vqSN3+fRkfctJZYV9mrTrMUTv00RMyC1oVXd39Davi6HzRHRPf6DqbjcOL41+1l2shZ9pmFUbYkfIaOsIeixQBbiQPsVtd9YJYQp67kUcSvrymZQdUAryFo6K1OIBuJNKWkAx2j7+NERGIBaGiUGCZJ+lWbhq5vbhGi62lQIAUfJL/lolUIXgBk+83OiM3+KNpMqh91p4cc766O4KIC+2E=
