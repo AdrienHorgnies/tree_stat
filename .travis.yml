@@ -5,7 +5,7 @@ python:
 - '3.5'
 - '3.6'
 script:
-- pytest
+- python -m pytest
 before_install:
 - python setup.py install
 deploy:
