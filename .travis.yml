@@ -5,12 +5,15 @@ python:
 - '3.5'
 - '3.6'
 cache: pip
+before_install:
+  - pip install --upgrade pip
+  - pip install pip-tools
+  - pip-compile
+  - python setup.py install
 before_script:
   - pip install -e .[dev]
 script:
   - python -m pytest
-before_install:
-- python setup.py install
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
