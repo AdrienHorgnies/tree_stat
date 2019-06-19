@@ -1,7 +1,6 @@
-from collections import defaultdict
-from os.path import splitext
-from pathlib import Path
 import logging
+from collections import defaultdict
+from pathlib import Path
 
 log = logging.getLogger('tree_stat.dm')
 
@@ -13,7 +12,7 @@ class DirectoryMeasure:
         self.__measures_by_file_type = defaultdict(FileTypeMeasure)
 
         for f in (Path(f) for f in files):
-            ext = splitext(f)[1]
+            ext = f.suffix
             file_size = path.joinpath(f).stat().st_size
             self.__measures_by_file_type[ext].volume += file_size
             self.__measures_by_file_type[ext].count += 1
