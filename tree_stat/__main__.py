@@ -37,7 +37,7 @@ def take_measures(directory):
     measures = []
 
     stack = []
-    for current, sub_dirs, files in os.walk(directory, topdown=False):
+    for current, sub_dirs, files in os.walk(str(directory), topdown=False):
         log.debug('working in {}'.format(current))
 
         measure = dm.DirectoryMeasure(files, path=Path(current))
