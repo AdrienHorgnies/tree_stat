@@ -1,6 +1,6 @@
 import setuptools
 
-version = '0.0.1'
+version = '0.1.0'
 
 setuptools.setup(
     name='tree_stat',
