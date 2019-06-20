@@ -25,7 +25,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Operating System :: OS Independent',
-        'Development Status :: 5 - Alpha'
+        'Development Status :: 3 - Alpha'
     ],
     keywords=[]
 )
