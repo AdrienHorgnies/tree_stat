@@ -25,4 +25,5 @@ deploy:
   server: https://test.pypi.org/legacy/
   on:
     tags: true
+    python: 3.7
   password: ${TEST_PYPI_PASSWORD}
