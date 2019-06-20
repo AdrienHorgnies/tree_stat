@@ -17,6 +17,7 @@ script:
 - cd tests/assets
 - python -m tree_stat sample-tree -o travis-stat.md # test script against sample data
 - diff travis-stat.md sample-tree-stat.md # compare sample result with expected result
+- cd ../..
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
