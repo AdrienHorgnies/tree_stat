@@ -14,8 +14,14 @@ before_script:
 script:
 - python -m pytest # unit tests
 - python setup.py build install # build and install so that I can test
-- python -m tree_stat sample-tree --pov parent -o actual-tree-stat.md # test script against sample data
-- diff actual-tree-stat.md tests/assets/expected-tree-stat.md # compare sample result with expected result
+- python -m tree_stat tests/assets/sample-tree -o actual-pov-None-tree-stat.md
+- diff actual-pov-None-tree-stat.md tests/assets/pov-None-expected-tree-stat.md
+- python -m tree_stat tests/assets/sample-tree -o actual-pov-parent-tree-stat.md
+- diff actual-pov-parent-tree-stat.md tests/assets/pov-parent-expected-tree-stat.md
+- python -m tree_stat tests/assets/sample-tree -o actual-pov-root-tree-stat.md
+- diff actual-pov-root-tree-stat.md tests/assets/pov-root-expected-tree-stat.md
+- python -m tree_stat tests/assets/sample-tree -o actual-pov-target-tree-stat.md
+- diff actual-pov-target-tree-stat.md tests/assets/pov-target-expected-tree-stat.md
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
