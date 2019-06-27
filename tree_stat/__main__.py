@@ -12,7 +12,7 @@ from tree_stat._display_file_size import COMMERCIAL, INFORMATICS, display_file_s
 log = logging.getLogger(__name__)
 
 
-def tree_stat(directory):
+def tree_stat(directory, pov):
     directory_measures = take_measures(directory)
 
     env = Environment(
@@ -22,6 +22,7 @@ def tree_stat(directory):
         lstrip_blocks=True,
     )
     env.globals['display_file_size'] = lambda size: display_file_size(size, args.coefficient_base)
+    env.globals['pov_formatter'] = pov_formatter(directory, pov)
 
     template = env.get_template('tree_stat.md')
 
@@ -57,19 +58,17 @@ def take_measures(directory):
     return measures
 
 
-def get_path_from_pov(path, pov):
+def pov_formatter(directory, pov):
     if pov is None:
-        return path
-    elif pov == 'self':
-        os.chdir(str(path))
-        return path.relative_to(path)
+        return lambda p: p
+    elif pov == 'target':
+        return lambda p: p.relative_to(directory)
     elif pov == 'root':
-        return path.absolute()
+        return lambda p: p.absolute()
     elif pov == 'parent':
-        os.chdir(str(path.absolute().parent))
-        return path.absolute().relative_to(path.absolute().parent)
+        return lambda p: p.absolute().relative_to(directory.absolute().parent)
     else:
-        raise ValueError('{} is not a known point of view. Choose from {}'.format(path, ['self', 'root', 'parent']))
+        raise ValueError('{} is not a known point of view. Choose from {}'.format(pov, ['self', 'root', 'parent']))
 
 
 def main():
@@ -83,13 +82,12 @@ def main():
                         const=COMMERCIAL, help='By default, size is printed using coefficient with base 1024.'
                                                ' This option sets coefficient base to 1000')
     parser.add_argument('--verbose', default=False, action='store_true', help='Display debug logs')
-    parser.add_argument('--point-of-view', '--pov', dest='pov', default=None, choices=['self', 'root', 'parent'])
+    parser.add_argument('--point-of-view', '--pov', dest='pov', default=None, choices=['target', 'root', 'parent'])
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
 
-    directory_from_pov = get_path_from_pov(args.directory, args.pov)
-    tree_stat(directory_from_pov)
+    tree_stat(args.directory, args.pov)
 
 
 if __name__ == '__main__':
