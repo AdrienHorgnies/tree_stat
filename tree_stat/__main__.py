@@ -61,10 +61,12 @@ def get_path_from_pov(path, pov):
     if pov is None:
         return path
     elif pov == 'self':
+        os.chdir(str(path))
         return path.relative_to(path)
     elif pov == 'root':
         return path.absolute()
     elif pov == 'parent':
+        os.chdir(str(path.absolute().parent))
         return path.absolute().relative_to(path.absolute().parent)
     else:
         raise ValueError('{} is not a known point of view. Choose from {}')
