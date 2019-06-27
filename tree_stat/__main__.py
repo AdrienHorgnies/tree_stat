@@ -69,7 +69,7 @@ def get_path_from_pov(path, pov):
         os.chdir(str(path.absolute().parent))
         return path.absolute().relative_to(path.absolute().parent)
     else:
-        raise ValueError('{} is not a known point of view. Choose from {}')
+        raise ValueError('{} is not a known point of view. Choose from {}'.format(path, ['self', 'root', 'parent']))
 
 
 def main():
