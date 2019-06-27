@@ -14,8 +14,8 @@ before_script:
 script:
 - python -m pytest # unit tests
 - python setup.py build install # build and install so that I can test
-- python -m tree_stat sample-tree --pov parent -o travis-stat.md # test script against sample data
-- diff travis-stat.md sample-tree-stat.md # compare sample result with expected result
+- python -m tree_stat sample-tree --pov parent -o actual-travis-stat.md # test script against sample data
+- diff actual-travis-stat.md tests/assets/expected-tree-stat.md # compare sample result with expected result
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
