@@ -16,11 +16,11 @@ script:
 - python setup.py build install # build and install so that I can test
 - python -m tree_stat tests/assets/sample-tree -o actual-pov-None-tree-stat.md
 - diff actual-pov-None-tree-stat.md tests/assets/pov-None-expected-tree-stat.md
-- python -m tree_stat tests/assets/sample-tree -o actual-pov-parent-tree-stat.md
+- python -m tree_stat tests/assets/sample-tree --pov parent -o actual-pov-parent-tree-stat.md
 - diff actual-pov-parent-tree-stat.md tests/assets/pov-parent-expected-tree-stat.md
-- python -m tree_stat tests/assets/sample-tree -o actual-pov-root-tree-stat.md
+- python -m tree_stat tests/assets/sample-tree --pov root -o actual-pov-root-tree-stat.md
 - diff actual-pov-root-tree-stat.md tests/assets/pov-root-expected-tree-stat.md
-- python -m tree_stat tests/assets/sample-tree -o actual-pov-target-tree-stat.md
+- python -m tree_stat tests/assets/sample-tree --pov target -o actual-pov-target-tree-stat.md
 - diff actual-pov-target-tree-stat.md tests/assets/pov-target-expected-tree-stat.md
 deploy:
   provider: pypi
