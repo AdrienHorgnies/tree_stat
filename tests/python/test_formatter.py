@@ -1,5 +1,6 @@
 # noinspection PyProtectedMember
-from tree_stat._formatter import COMMERCIAL, INFORMATICS, format_file_size
+from tree_stat._formatter import COMMERCIAL, INFORMATICS, format_file_size, path_formatter
+from pathlib import Path
 
 
 def test_display_0():
@@ -25,3 +26,20 @@ def test_display_7777777():
 def test_display_big_number():
     assert format_file_size(10 ** 100, unit_base=INFORMATICS) == '{:.3f} YiB'.format(10 ** 100 / 1024 ** 8)
     assert format_file_size(10 ** 100, unit_base=COMMERCIAL) == '{:.3f} YB'.format(10 ** 100 / 1000 ** 8)
+
+
+def test_path_formatter(assets_path, sample_tree_path):
+    assert path_formatter(assets_path, None)(sample_tree_path) == sample_tree_path
+
+
+def test_path_formatter_target(assets_path, sample_tree_path):
+    assert path_formatter(assets_path, 'target')(sample_tree_path) == Path('sample_tree')
+
+
+def test_path_formatter_parent(assets_path, sample_tree_path):
+    assert path_formatter(assets_path, 'parent')(sample_tree_path) == Path('assets', 'sample_tree')
+
+
+def test_path_formatter_root(assets_path, sample_tree_path):
+    assert path_formatter(assets_path, 'root')(sample_tree_path) == sample_tree_path.absolute()
+

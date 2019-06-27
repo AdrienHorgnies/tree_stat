@@ -7,7 +7,7 @@ from pathlib import Path
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 from tree_stat import directory_measure as dm
-from tree_stat._formatter import COMMERCIAL, INFORMATICS, format_file_size
+from tree_stat._formatter import COMMERCIAL, INFORMATICS, format_file_size, path_formatter
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ def tree_stat(directory, pov):
         lstrip_blocks=True,
     )
     env.globals['format_file_size'] = lambda size: format_file_size(size, args.coefficient_base)
-    env.globals['pov_formatter'] = pov_formatter(directory, pov)
+    env.globals['pov_formatter'] = path_formatter(directory, pov)
 
     template = env.get_template('tree_stat.md')
 
@@ -56,19 +56,6 @@ def take_measures(directory):
             stack.append(measure.edible_clone())
 
     return measures
-
-
-def pov_formatter(directory, pov):
-    if pov is None:
-        return lambda p: p
-    elif pov == 'target':
-        return lambda p: p.relative_to(directory)
-    elif pov == 'root':
-        return lambda p: p.absolute()
-    elif pov == 'parent':
-        return lambda p: p.absolute().relative_to(directory.absolute().parent)
-    else:
-        raise ValueError('{} is not a known point of view. Choose from {}'.format(pov, ['self', 'root', 'parent']))
 
 
 def main():

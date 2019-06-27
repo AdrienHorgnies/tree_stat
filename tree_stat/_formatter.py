@@ -25,3 +25,16 @@ def format_file_size(size, unit_base=INFORMATICS):
     return '{number:.3f} {coefficient}B'.format(
         number=size / unit_base ** size_log,
         coefficient=coefficients[size_log])
+
+
+def path_formatter(directory, pov):
+    if pov is None:
+        return lambda p: p
+    elif pov == 'target':
+        return lambda p: p.relative_to(directory)
+    elif pov == 'root':
+        return lambda p: p.absolute()
+    elif pov == 'parent':
+        return lambda p: p.absolute().relative_to(directory.absolute().parent)
+    else:
+        raise ValueError('{} is not a known point of view. Choose from {}'.format(pov, ['self', 'root', 'parent']))
