@@ -57,6 +57,19 @@ def take_measures(directory):
     return measures
 
 
+def get_path_from_pov(path, pov):
+    if pov is None:
+        return path
+    elif pov == 'self':
+        return path.relative_to(path)
+    elif pov == 'root':
+        return path.absolute()
+    elif pov == 'parent':
+        return path.absolute().relative_to(path.absolute().parent)
+    else:
+        raise ValueError('{} is not a known point of view. Choose from {}')
+
+
 def main():
     global args
     parser = argparse.ArgumentParser(description='Find files recursively and compute size of each directory level')
@@ -68,11 +81,13 @@ def main():
                         const=COMMERCIAL, help='By default, size is printed using coefficient with base 1024.'
                                                ' This option sets coefficient base to 1000')
     parser.add_argument('--verbose', default=False, action='store_true', help='Display debug logs')
+    parser.add_argument('--point-of-view', '--pov', dest='pov', default=None, choices=['self', 'root', 'parent'])
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
 
-    tree_stat(args.directory)
+    directory_from_pov = get_path_from_pov(args.directory, args.pov)
+    tree_stat(directory_from_pov)
 
 
 if __name__ == '__main__':
