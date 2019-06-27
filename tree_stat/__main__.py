@@ -7,7 +7,7 @@ from pathlib import Path
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 from tree_stat import directory_measure as dm
-from tree_stat._display_file_size import COMMERCIAL, INFORMATICS, display_file_size
+from tree_stat._formatter import COMMERCIAL, INFORMATICS, format_file_size
 
 log = logging.getLogger(__name__)
 
@@ -21,7 +21,7 @@ def tree_stat(directory, pov):
         trim_blocks=True,
         lstrip_blocks=True,
     )
-    env.globals['display_file_size'] = lambda size: display_file_size(size, args.coefficient_base)
+    env.globals['format_file_size'] = lambda size: format_file_size(size, args.coefficient_base)
     env.globals['pov_formatter'] = pov_formatter(directory, pov)
 
     template = env.get_template('tree_stat.md')

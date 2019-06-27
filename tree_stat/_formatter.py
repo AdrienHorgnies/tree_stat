@@ -6,7 +6,7 @@ INFORMATICS = 2**10
 __coefficient_symbols = '_KMGTPEZY'
 
 
-def display_file_size(size, unit_base=INFORMATICS):
+def format_file_size(size, unit_base=INFORMATICS):
     if size == 0:
         return '0 B'
 
