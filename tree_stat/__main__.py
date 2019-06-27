@@ -12,7 +12,7 @@ from tree_stat._formatter import COMMERCIAL, INFORMATICS, format_file_size, path
 log = logging.getLogger(__name__)
 
 
-def tree_stat(directory, pov):
+def tree_stat(directory, pov, light):
     directory_measures = take_measures(directory)
 
     env = Environment(
@@ -24,7 +24,10 @@ def tree_stat(directory, pov):
     env.globals['format_file_size'] = lambda size: format_file_size(size, args.coefficient_base)
     env.globals['pov_formatter'] = path_formatter(directory, pov)
 
-    template = env.get_template('tree_stat.md')
+    if light:
+        template = env.get_template('tree_stat_light.md')
+    else:
+        template = env.get_template('tree_stat.md')
 
     report = template.render(directory_measures=directory_measures)
 
@@ -61,7 +64,8 @@ def take_measures(directory):
 def main():
     global args
     parser = argparse.ArgumentParser(description='Find files recursively and compute size of each directory level')
-    parser.add_argument('directory', type=Path, nargs='?', default=Path.cwd().relative_to(Path.cwd()), help='a directory to search in')
+    parser.add_argument('directory', type=Path, nargs='?', default=Path.cwd().relative_to(Path.cwd()),
+                        help='a directory to search in')
     parser.add_argument('-o', '--output', type=Path, help='File to write to result into')
     parser.add_argument('--print', default=False, action='store_true',
                         help='Print result to standard output, it is the default if --output is not specified')
@@ -69,12 +73,15 @@ def main():
                         const=COMMERCIAL, help='By default, size is printed using coefficient with base 1024.'
                                                ' This option sets coefficient base to 1000')
     parser.add_argument('--verbose', default=False, action='store_true', help='Display debug logs')
-    parser.add_argument('--point-of-view', '--pov', dest='pov', default=None, choices=['target', 'root', 'parent'])
+    parser.add_argument('--point-of-view', '--pov', dest='pov', default=None, choices=['target', 'root', 'parent'],
+                        help='set the point of view to display the path with')
+    parser.add_argument('--type-without-path', dest='light', default=False, action='store_true',
+                        help='Do not repeat path in front of file type record')
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
 
-    tree_stat(args.directory, args.pov)
+    tree_stat(args.directory, args.pov, args.light)
 
 
 if __name__ == '__main__':
