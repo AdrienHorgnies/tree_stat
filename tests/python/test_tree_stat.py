@@ -7,7 +7,7 @@ def teardown():
     tree_stat_dirs = list(d for d in Path('/tmp').iterdir() if d.name.startswith('tree_stat') and d.joinpath(
         'very-improbable-string-that-user-will-not-use.md').is_file())
     for d in tree_stat_dirs:
-        rmtree(d)
+        rmtree(str(d))
 
 
 def test_tree_stat(sample_tree_path):
