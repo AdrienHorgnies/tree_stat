@@ -18,4 +18,3 @@ def test_tree_stat(sample_tree_path):
 
     assert found
     assert len(others) == 0, 'Found more than one replacement directory, did you fail to cleanup previous test ?'
-    rmtree(found)
